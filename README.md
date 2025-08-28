@@ -9,3 +9,5 @@ How to start the virtual environment
 5. open the terminal
 6. type in: cd .venv/Scripts
 7. type in: activate
+
+Once you have this set up, the virtual environment will always be running and you will never have to do this again
