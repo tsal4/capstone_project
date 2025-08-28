@@ -1,2 +1,11 @@
 # capstone_project
 This repository is for the Chat Bot Goblins capstone project in CS4700-51 Fall 2025.
+
+How to start the virtual environment
+1. open the agent.py file
+2. click on the python version on the bottom left of the vs code window
+3. select create virtual environment at the top of your vs code window
+4. select Venv
+5. open the terminal
+6. type in: cd .venv/Scripts
+7. type in: activate
