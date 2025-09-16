@@ -9,5 +9,7 @@ How to start the virtual environment
 5. open the terminal
 6. type in: cd .venv/Scripts
 7. type in: activate
+8. make sure you are in the capstone_project folder
+9. type in: pip install google-adk
 
 Once you have this set up, the virtual environment will always be running and you will never have to do this again
