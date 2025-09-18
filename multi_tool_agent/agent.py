@@ -1,0 +1,22 @@
+from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm
+
+#This is where we define the function that will act as our tool
+#def get_current_time(city):
+    # Your logic to get time from a city timezone
+#    pass
+    
+#tools=[get_current_time]
+
+
+root_agent = Agent(
+    model=LiteLlm(model="ollama_chat/llama3.2"),
+    name="Alfred",
+    description=(
+        "You are a simple agent that only says hello to any input given"
+    ),
+    instruction="""
+      Respond "hello" to any input given.
+    """,
+    tools=[],
+)
