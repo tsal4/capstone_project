@@ -11,5 +11,6 @@ How to start the virtual environment
 7. type in: activate
 8. make sure you are in the capstone_project folder
 9. type in: pip install google-adk
+10. type in: pip install litellm
 
 Once you have this set up, the virtual environment will always be running and you will never have to do this again
