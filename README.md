@@ -14,3 +14,5 @@ How to start the virtual environment
 10. type in: pip install litellm
 
 Once you have this set up, the virtual environment will always be running and you will never have to do this again
+
+**use 'adk web' to run Alfred
