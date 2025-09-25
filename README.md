@@ -9,10 +9,11 @@ How to start the virtual environment
 5. open the terminal
 6. type in: cd .venv/Scripts
 7. type in: activate
-8. make sure you are in the capstone_project folder
+8. make sure you are in the capstone_project directory
 9. type in: pip install google-adk
 10. type in: pip install litellm
 
 Once you have this set up, the virtual environment will always be running and you will never have to do this again
 
-**use 'adk web' to run Alfred
+**use 'adk web' to run Alfred**
+(make sure you are in the capstone_project directory)
