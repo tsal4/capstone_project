@@ -10,7 +10,7 @@ from google.adk.models.lite_llm import LiteLlm
 
 
 root_agent = Agent(
-    model=LiteLlm(model="ollama_chat/llama3.2"),
+    model=LiteLlm(model="ollama_chat/llama3.2:1b"),
     name="Alfred",
     description=(
         "You are a simple agent that only says hello to any input given"

@@ -19,6 +19,9 @@ Once you have this set up, the virtual environment will always be running and yo
 (make sure you are in the capstone_project directory)
 
 STT OpenAI whisper
-1. pip install -U openai-whisper
+1. type in: pip install -U openai-whisper
 2. install the ffmpeg tool on your laptop: https://ffmpeg.org/
     a. follow the manual instructions for windows: https://github.com/oop7/ffmpeg-install-guide?tab=readme-ov-file
+
+TTS
+1. type in: pip install pyttsx3
