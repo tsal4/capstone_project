@@ -13,10 +13,10 @@ root_agent = Agent(
     model=LiteLlm(model="ollama_chat/llama3.2:1b"),
     name="Alfred",
     description=(
-        "You are a simple agent that only says hello to any input given"
+        "You are a simple agent that likes to converse with users"
     ),
     instruction="""
-      Respond "hello" to any input given.
+      Respond accordingly to user input in a friendly way.
     """,
     tools=[],
 )
