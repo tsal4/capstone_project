@@ -2,7 +2,21 @@ import whisper
 
 model = whisper.load_model("tiny")
 
-audio_path = r"C:\Users\tadsa\GitHub\capstone_project\speech_to_text_model\voice-sample.wav"
+# normal .wav file
+#audio_path = r"C:\Users\tadsa\GitHub\capstone_project\speech_to_text_model\voice-sample.wav"
+
+# normal .m4a file
+#audio_path = r"C:\Users\tadsa\aaaaa_test_audio\test_4_normal_audio.m4a"
+
+# far away audio
+#audio_path = r"C:\Users\tadsa\aaaaa_test_audio\test_2_far_away.m4a"
+
+# sound interfernce
+#audio_path = r"C:\Users\tadsa\aaaaa_test_audio\test_3_interference.m4a"
+
+# accent (scottish)
+audio_path = r"C:\Users\tadsa\aaaaa_test_audio\test_5_accent.m4a"
+
 
 # load audio and pad/trim it to fit 30 seconds
 audio = whisper.load_audio(audio_path)
