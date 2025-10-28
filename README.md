@@ -25,3 +25,10 @@ TTS
 
 GUI
 1. pip install Kivy
+
+Wake Word detection: Type in
+1. pip install SpeechRecognition
+2. pip install sounddevice
+3. pip install scipy
+4. pip install
+5. pip install pyttsx3
