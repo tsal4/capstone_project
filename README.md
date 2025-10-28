@@ -10,25 +10,10 @@ How to start the virtual environment
 6. type in: cd .venv/Scripts
 7. type in: activate
 8. make sure you are in the capstone_project directory
-9. type in: pip install -qU langchain-ollama
-10. type in: pip install litellm
+9. type in: pip install -r requirements.txt
 
 Once you have this set up, the virtual environment will always be running and you will never have to do this again
 
 STT OpenAI whisper
-1. type in: pip install -U openai-whisper
-2. install the ffmpeg tool on your laptop: https://ffmpeg.org/
+1. install the ffmpeg tool on your laptop: https://ffmpeg.org/
     a. follow the manual instructions for windows: https://github.com/oop7/ffmpeg-install-guide?tab=readme-ov-file
-
-TTS
-1. type in: pip install pyttsx3
-
-GUI
-1. pip install Kivy
-
-Wake Word detection: Type in
-1. pip install SpeechRecognition
-2. pip install sounddevice
-3. pip install scipy
-4. pip install
-5. pip install pyttsx3

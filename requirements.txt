@@ -1,0 +1,8 @@
+langchain-ollama
+litellm
+openai-whisper
+pyttsx3
+Kivy
+SpeechRecognition
+sounddevice
+scipy
