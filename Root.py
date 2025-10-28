@@ -1,7 +1,7 @@
 import speech_recognition as sr       # Handles speech input
 import sounddevice as sd              # Records audio from the microphone
 from scipy.io.wavfile import write    # Saves recorded audio to a .wav file
-import openai                         # Connects to OpenAI API for Whisper + GPT
+#import openai                         # Connects to OpenAI API for Whisper + GPT
 import pyttsx3                        # Text-to-speech engine for vocal responses
 import time                           # Used for timing pauses between actions
 import random                         # Used for selecting a random greeting
