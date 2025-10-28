@@ -11,6 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 class Alfred(App):
     def build(self):
         self.window = GridLayout()
+        self.window2 = BoxLayout()
         #add widgets to window
         self.window.cols = 1
         self.window.size_hint = (0.6, 0.7)
@@ -36,27 +37,31 @@ class Alfred(App):
                 
         #Button Widget
         self.button = Button(text = "Enter",
-                             size_hint = (1,0.5),
+                             size_hint = (None,None), size=(100,50),
                              bold = True,
                              background_color = "#0099FF",
                              background_normal = ""
                              
                              )
         #Microphone Button
-        self.mic_button = Button(text= "Mic", size_hint = (1,0.5) #size = (50,50)
+        self.mic_button = Button(text= "Mic", size_hint = (None,None), size = (100,50)
                                 )
-        self.window.add_widget(self.mic_button)
+        #self.window.add_widget(self.mic_button)
 
 
         self.button.bind(on_press= self.callback)
-        self.window.add_widget(self.button)
+        #self.window.add_widget(self.button)
 
         #Horizontal Layout for Buttons
-        #horizontal_layout = BoxLayout(orientation='vertical', spacing=20, padding=20)
+        horizontal_layout = BoxLayout(orientation='horizontal', spacing=20, padding=20)
 
         #self.window.add_widget(self.mic_button)
         #self.window.add_widget(self.button)
 
+        horizontal_layout.add_widget(self.mic_button)
+        horizontal_layout.add_widget(self.button)
+
+        self.window.add_widget(horizontal_layout)
 
         return self.window
 
