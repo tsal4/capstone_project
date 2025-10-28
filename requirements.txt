@@ -1,4 +1,0 @@
-pyttsx3
-openai-whisper
-langchain-ollama
-litellm
