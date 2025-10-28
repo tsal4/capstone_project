@@ -22,7 +22,7 @@ class Alfred(App):
         self.greeting = Label(
                             text = "Welcome, ask a question below!",
                             font_size = 25,
-                            color ="0099FF"
+                            color ="white"
                              )
         self.window.add_widget(self.greeting)
         #User input widget
