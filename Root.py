@@ -1,26 +1,20 @@
 import speech_recognition as sr       # Handles speech input
 import sounddevice as sd              # Records audio from the microphone
 from scipy.io.wavfile import write    # Saves recorded audio to a .wav file
-import openai                         # Connects to OpenAI API for Whisper + GPT
 import pyttsx3                        # Text-to-speech engine for vocal responses
 import time                           # Used for timing pauses between actions
 import random                         # Used for selecting a random greeting
+import whisper                        # Model for speech-to-text
 
+#initialize variables for wake word detection and audio recording
+WAKE_WORD = "alfred"
+FREQ = 44100
+DURATION = 10
 
-# CONFIGURE THE SPECIFICS
+#instantiate speech-to-text model
+model = whisper.load_model("tiny")
 
-
-WAKE_WORD = "alfred"      # Trigger word activates the assistant
-FREQ = 44100              # Audio recording frequency
-DURATION = 10             # Recording duration in seconds
-
-
-# OpenAI API Key for securit & to monitor access to the data
-openai.api_key = "YOUR_OPENAI_API_KEY_HERE"
-
-
-# STEP 1 — Wake Word Detection
-
+# Wake word detection which starts recording audio
 def listen_for_wake_word():
     """Continuously listens through the microphone until the wake word is detected."""
     recognizer = sr.Recognizer()
@@ -70,32 +64,45 @@ def listen_for_wake_word():
             # API request failed
             print("Speech recognition service error")
 
-
-# STEP 2 — Record Audio
-
-
+# Record user input
 def record_audio():
     """Records 10 seconds of audio and saves it to 'recording.wav'."""
     print("Recording for 10 seconds...")
     recording = sd.rec(int(DURATION * FREQ), samplerate=FREQ, channels=2)
     sd.wait()  # Wait until recording is complete
-    write("recording.wav", FREQ, recording)
-    print("Saved as recording.wav")
+    audio_file = write("recording.wav", FREQ, recording)
+    #print("Saved as recording.wav")
+    return audio_file
 
-# MAIN FUNCTION
+# Speech-to-text
+def speech_to_text(audio_file):
+    # load audio and pad/trim it to fit 30 seconds
+    audio = whisper.load_audio(audio_file)
+    audio = whisper.pad_or_trim(audio)
 
+    # make log-Mel spectrogram and move to the same device as the model
+    mel = whisper.log_mel_spectrogram(audio, n_mels=model.dims.n_mels).to(model.device)
 
+    # detect the spoken language
+    _, probs = model.detect_language(mel)
+    #print(f"Detected language: {max(probs, key=probs.get)}")
+
+    # decode the audio
+    options = whisper.DecodingOptions()
+    result = whisper.decode(model, mel, options)
+
+    # return the recognized text
+    return result
+
+# Main function that connects all our components together
 def main():
-    """Main loop that connects all steps into a continuous voice assistant pipeline."""
     while True:
-        listen_for_wake_word()                       # 1. Wait for the wake word
-        record_audio()                               # 2. Record user's voice
-        user_text = speech_to_text("recording.wav")  # 3. Transcribe to text
-        response = get_response(user_text)           # 4. Get GPT response
+        listen_for_wake_word()                       # 1. Listen for wake word
+        speech_input = record_audio()                # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
+        text_input = speech_to_text(speech_input)    # 3. Convert 'speech_input' to a text and save it as 'text_input'
         speak(response)                              # 5. Speak the response aloud
         print("\nListening again...\n")              # Loop back to wait for wake word
 
 
-# Entry point
 if __name__ == "__main__":
     main()
