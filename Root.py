@@ -6,6 +6,7 @@ import time                           # Used for timing pauses between actions
 import random                         # Used for selecting a random greeting
 import whisper                        # Model for speech-to-text
 
+#create variables for wake word detection and audio recording
 WAKE_WORD = "alfred"
 FREQ = 44100
 DURATION = 10
