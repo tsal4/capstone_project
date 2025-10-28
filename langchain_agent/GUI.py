@@ -32,8 +32,8 @@ class Alfred(App):
                         size_hint = (1,0.5)
         )
 
-
         self.window.add_widget(self.user)
+                
         #Button Widget
         self.button = Button(text = "Enter",
                              size_hint = (1,0.5),
@@ -43,13 +43,20 @@ class Alfred(App):
                              
                              )
         #Microphone Button
-        self.mic_button = Button(text= "Mic", size_hint = (None, None), size = (50,50)
+        self.mic_button = Button(text= "Mic", size_hint = (1,0.5) #size = (50,50)
                                 )
         self.window.add_widget(self.mic_button)
 
 
         self.button.bind(on_press= self.callback)
         self.window.add_widget(self.button)
+
+        #Horizontal Layout for Buttons
+        #horizontal_layout = BoxLayout(orientation='vertical', spacing=20, padding=20)
+
+        #self.window.add_widget(self.mic_button)
+        #self.window.add_widget(self.button)
+
 
         return self.window
 
