@@ -6,3 +6,4 @@ Kivy
 SpeechRecognition
 sounddevice
 scipy
+whisper
