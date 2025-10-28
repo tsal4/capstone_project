@@ -22,3 +22,6 @@ STT OpenAI whisper
 
 TTS
 1. type in: pip install pyttsx3
+
+GUI
+1. pip install Kivy
