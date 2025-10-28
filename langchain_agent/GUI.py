@@ -37,7 +37,7 @@ class Alfred(App):
                 
         #Button Widget
         self.button = Button(text = "Enter",
-                             size_hint = (None,None), size=(900,50),
+                             size_hint = (1,0.5), 
                              bold = True,
                              background_color = "#0099FF",
                              background_normal = ""
