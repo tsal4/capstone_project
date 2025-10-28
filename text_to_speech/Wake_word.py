@@ -15,7 +15,7 @@ FREQ = 44100              # Audio recording frequency
 DURATION = 10             # Recording duration in seconds
 
 
-# OpenAI API Key
+# OpenAI API Key for securit & to monitor access to the data
 openai.api_key = "YOUR_OPENAI_API_KEY_HERE"
 
 
