@@ -16,7 +16,7 @@ class Alfred(App):
         self.window.size_hint = (0.6, 0.7)
         self.window.pos_hint = {"center_x": 0.5, "center_y": 0.5}
         #image widget
-        self.window.add_widget(Image(source="C:\\Users\\steph\\Downloads\\AlfredLogo.png"))
+        self.window.add_widget(Image(source="C:\\Users\\steph\\OneDrive\\Documents\\GitHub\\capstone_project\\AlfredLogo.png"))    
         
         #Label Widget
         self.greeting = Label(
