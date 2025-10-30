@@ -7,3 +7,4 @@ SpeechRecognition
 sounddevice
 scipy
 whisper
+pyaudio

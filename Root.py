@@ -70,8 +70,9 @@ def record_audio():
     print("Recording for 10 seconds...")
     recording = sd.rec(int(DURATION * FREQ), samplerate=FREQ, channels=2)
     sd.wait()  # Wait until recording is complete
-    audio_file = write("recording.wav", FREQ, recording)
+    write("recording.wav", FREQ, recording)
     #print("Saved as recording.wav")
+    audio_file = "recording.wav"
     return audio_file
 
 # Speech-to-text
@@ -92,16 +93,17 @@ def speech_to_text(audio_file):
     result = whisper.decode(model, mel, options)
 
     # return the recognized text
-    return result
+    return result.text
 
 # Main function that connects all our components together
 def main():
     while True:
-        listen_for_wake_word()                       # 1. Listen for wake word
-        speech_input = record_audio()                # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
-        text_input = speech_to_text(speech_input)    # 3. Convert 'speech_input' to a text and save it as 'text_input'
-        speak(response)                              # 5. Speak the response aloud
-        print("\nListening again...\n")              # Loop back to wait for wake word
+        listen_for_wake_word()                        # 1. Listen for wake word
+        speech_input = record_audio()                 # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
+        text_input = speech_to_text(speech_input)     # 3. Convert 'speech_input' to a text and save it as 'text_input'
+        print(text_input)
+        #speak(response)                              # 5. Speak the response aloud
+        #print("\nListening again...\n")              # Loop back to wait for wake word
 
 
 if __name__ == "__main__":
