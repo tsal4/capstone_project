@@ -72,7 +72,7 @@ class Alfred(App):
         threading.Thread(target=self.long).start()
 
     def long(self):
-        time.sleep(.5)  #only simulating a task
+        time.sleep(.5)  #only simulating a task, replace with function later
 
         Clock.schedule_once(self.update_greeting)
 
