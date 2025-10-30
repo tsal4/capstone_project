@@ -1,3 +1,4 @@
+
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -5,6 +6,9 @@ from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+import threading
+from kivy.clock import Clock
+import time
 
 #pip install Kivy
 
@@ -46,17 +50,15 @@ class Alfred(App):
         #Microphone Button
         self.mic_button = Button(text= "Mic", size_hint = (None,None), size = (100,50), background_color = "#B700FF"
                                 )
-        #self.window.add_widget(self.mic_button)
-
 
         self.button.bind(on_press= self.callback)
+
+
+
         self.window.add_widget(self.button)
 
         #Horizontal Layout for Buttons
         horizontal_layout = BoxLayout(orientation='horizontal', spacing=20, padding=20)
-
-        #self.window.add_widget(self.mic_button)
-        #self.window.add_widget(self.button)
 
         horizontal_layout.add_widget(self.mic_button)
         #horizontal_layout.add_widget(self.button)
@@ -66,9 +68,19 @@ class Alfred(App):
         return self.window
 
     def callback(self, event):
+        self.greeting.text = "Loading ..."
+        threading.Thread(target=self.long).start()
+
+    def long(self):
+        time.sleep(.5)  #only simulating a task
+
+        Clock.schedule_once(self.update_greeting)
+
+    def update_greeting(self, event):
         self.greeting.text = "Hello " + self.user.text
 
 
-
+   
 if __name__ == "__main__":
     Alfred().run()
+    
