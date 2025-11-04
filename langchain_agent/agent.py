@@ -2,6 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.tools import tool
 
+'''
 #example tool
 @tool
 def validate_user(user_id: int, addresses: str) -> bool:
@@ -12,11 +13,13 @@ def validate_user(user_id: int, addresses: str) -> bool:
         addresses (str): Previous addresses as a list of strings.
     """
     return True
+'''
 
 llm = ChatOllama(
     model="llama3.2:1b",
     temperature=0,
-).bind_tools([validate_user])
+)
+#.bind_tools([validate_user])
 
 prompt = ChatPromptTemplate.from_messages(
     [
