@@ -1,5 +1,5 @@
 from langchain_ollama import ChatOllama
-from langchain_core.prompts import ChatPromptTemplate #might need to add this to requirements.txt
+from langchain_core.prompts import ChatPromptTemplate
 from langchain.tools import tool
 
 #example tool

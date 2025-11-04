@@ -1,11 +1,11 @@
 langchain-ollama
+langchain-core
+langchain
 litellm
-openai-whisper
-pyttsx3
 Kivy
+pyttsx3
 SpeechRecognition
 sounddevice
 scipy
 whisper
 pyaudio
-langchain
