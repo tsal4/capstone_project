@@ -8,3 +8,4 @@ sounddevice
 scipy
 whisper
 pyaudio
+langchain.tools
