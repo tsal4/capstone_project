@@ -1,15 +1,22 @@
-import speech_recognition as sr       # Handles speech input
-import sounddevice as sd              # Records audio from the microphone
-from scipy.io.wavfile import write    # Saves recorded audio to a .wav file
-import pyttsx3                        # Text-to-speech engine for vocal responses
-import time                           # Used for timing pauses between actions
-import random                         # Used for selecting a random greeting
-import whisper                        # Model for speech-to-text
+import speech_recognition as sr  #Handles speech input
+import sounddevice as sd  #Records audio from the microphone
+from scipy.io.wavfile import write  #Saves recorded audio to a .wav file
+import pyttsx3  #Text-to-speech engine for vocal responses
+import time  #Used for timing pauses between actions
+import random  #Used for selecting a random greeting
+import whisper  #Model for speech-to-text
+from langchain_ollama import ChatOllama  #Framework that is compatible with Ollama
+from langchain_core.tools import tool  #Allows agent to use tools
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage  #Defines instructions and input for the agent
+from langchain_community.document_loaders.csv_loader import CSVLoader  #Loads in the CSV
 
 #initialize variables for wake word detection and audio recording
 WAKE_WORD = "alfred"
 FREQ = 44100
 DURATION = 10
+
+#initialize engine for text-to-speech
+engine = pyttsx3.init()
 
 #instantiate speech-to-text model
 model = whisper.load_model("tiny")
@@ -45,8 +52,6 @@ def listen_for_wake_word():
 
 
                 # NEW FEATURE: Randomized Voice Greeting
-
-                engine = pyttsx3.init()
                 greeting = random.choice(greetings)
                 engine.say(greeting)
                 engine.runAndWait()
@@ -95,15 +100,27 @@ def speech_to_text(audio_file):
     # return the recognized text
     return result.text
 
+# Agent logic
+
+
+# Text-to-speech || NEEDS WORK
+def text_to_speech(text):
+    engine.say("{text}")
+    engine.runAndWait()
+
 # Main function that connects all our components together
 def main():
     while True:
         listen_for_wake_word()                        # 1. Listen for wake word
         speech_input = record_audio()                 # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
         text_input = speech_to_text(speech_input)     # 3. Convert 'speech_input' to a text and save it as 'text_input'
-        print(text_input)
-        #speak(response)                              # 5. Speak the response aloud
-        #print("\nListening again...\n")              # Loop back to wait for wake word
+
+        #quick test mid-loop
+        #print(text_input)
+
+        #agent call goes here                         # 4. agent call
+        #text_to_speech(agent_response)               # 5. Speak Alfred's text response back to the user
+
 
 
 if __name__ == "__main__":
