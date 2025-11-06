@@ -9,3 +9,4 @@ sounddevice
 scipy
 openai-whisper
 pyaudio
+langchain-community

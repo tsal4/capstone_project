@@ -1,13 +1,21 @@
 from langchain_ollama import ChatOllama
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
+from langchain_community.document_loaders.csv_loader import CSVLoader
+
+loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
+data = loader.load()
 
 @tool
-def add(x: int, y: int) -> int:
-    """Adds 2 numbers and returns the result"""
-    return x + y
+def query_course_data(query: str) -> str:
+    """Iterates through data object and returns docs that match the query parameter"""
+    results = []
+    for doc in data:
+        if query.lower() in doc.page_content.lower():
+            results.append(doc.page_content)
+    return "\n".join(results)
 
-tools = [add]
+tools = [query_course_data]
 
 model = ChatOllama(
     model="llama3.2:1b",
@@ -16,9 +24,13 @@ model = ChatOllama(
 
 messages = [
     SystemMessage(
-        content="You are a helpful assistant, always use the tools provided to answer the user's question."
+        content="You are a helpful assistant whose name is Alfred. You help students at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
+        "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
+        "If you do not understand the question, ALWAYS answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
+        "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
+        "UNDER NO CIRCUMSTANCES should you ever use profanity."
     ),
-    HumanMessage(content="use the add tool to add 2 + 2"),
+    HumanMessage(content="Tell me about lebron james."),
 ]
 
 # First model call - will likely get a tool call
@@ -52,7 +64,9 @@ if response.tool_calls:
 
                 # Get final response after tool execution
                 final_response = model.invoke(messages)
+                tools = response.tool_calls[0]["name"]
                 print(f"Final response: {final_response.content}")
+                print(f"Tools used: {tools}")
                 break
 else:
     print("No tool calls were made.")
