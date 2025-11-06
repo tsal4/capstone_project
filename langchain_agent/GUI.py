@@ -51,23 +51,23 @@ class Alfred(App):
 
         
         #Button Widget
-       # self.button = Button(text = "Mic",
-                           #  size_hint = (1,0.5), 
-                          #   bold = True,
-                           #  background_color = "#0099FF",
-                           #  background_normal = ""
+        self.button = Button(text = "Mic",
+                             size_hint = (1,0.5), 
+                             bold = True,
+                             background_color = "#0099FF",
+                             background_normal = ""
                              
-                          #   )
+                             )
     
         #Microphone Button
         #self.mic_button = Button(text= "Mic", size_hint = (None,None), size = (100,50), background_color = "#B700FF"
-                               # )
+                                #)
 
        # self.button.bind(on_press= self.callback)
 
 
 
-       # self.window.add_widget(self.button)
+        self.window.add_widget(self.button)
 
         #Horizontal Layout for Buttons
         #horizontal_layout = BoxLayout(orientation='horizontal', spacing=20, padding=20)
