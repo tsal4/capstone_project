@@ -1,0 +1,4 @@
+espeak-ng
+espeak-ng-data
+libespeak-ng1
+alsa-utils
