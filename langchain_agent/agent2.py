@@ -4,8 +4,6 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_community.document_loaders.csv_loader import CSVLoader
 import pyttsx3
 
-
-
 loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
 data = loader.load()
 
@@ -29,14 +27,14 @@ messages = [
     SystemMessage(
         content="You are a helpful assistant whose name is Alfred. You help students at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
         "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
-        "If you do not understand the question, ALWAYS answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
+        "ALWAYS use the data returned from the tool to form your response."
+        "If the tool does not return anything, always answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
         "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
         "UNDER NO CIRCUMSTANCES should you ever use profanity." 
-
         "When you give an answer, respond in clear sentences, not in raw CSV text."
 
     ),
-    HumanMessage(content="What is the course number for design patterns"),
+    HumanMessage(content="what is the course number for big data analytics"),
 ]
 
 # First model call - will likely get a tool call
