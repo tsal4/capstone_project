@@ -2,6 +2,9 @@ from langchain_ollama import ChatOllama
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_community.document_loaders.csv_loader import CSVLoader
+import pyttsx3
+
+
 
 loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
 data = loader.load()
@@ -28,9 +31,12 @@ messages = [
         "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
         "If you do not understand the question, ALWAYS answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
         "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
-        "UNDER NO CIRCUMSTANCES should you ever use profanity."
+        "UNDER NO CIRCUMSTANCES should you ever use profanity." 
+
+        "When you give an answer, respond in clear sentences, not in raw CSV text."
+
     ),
-    HumanMessage(content="Tell me about lebron james."),
+    HumanMessage(content="What is the course number for design patterns"),
 ]
 
 # First model call - will likely get a tool call
@@ -53,20 +59,26 @@ if response.tool_calls:
                 print(f"Tool result: {tool_result}")
 
                 # Add the tool result to the messages
-                messages.append(response)
                 messages.append(
                     ToolMessage(
                         content=str(tool_result),
-                        tool_call_id=tool_id,
+                        tool_call_id=tool_call["id"],
                         name=tool_name,
                     )
                 )
 
                 # Get final response after tool execution
                 final_response = model.invoke(messages)
+                final_response_content = final_response.content
                 tools = response.tool_calls[0]["name"]
                 print(f"Final response: {final_response.content}")
                 print(f"Tools used: {tools}")
+
+
+                engine = pyttsx3.init()
+                engine.say(final_response_content)
+                engine.runAndWait()   
+
                 break
 else:
     print("No tool calls were made.")
