@@ -25,20 +25,20 @@ class Alfred(App):
         
         #Label Widget
         self.greeting = Label(
-                            text = "Alfred: Welcome, ask a question!",
+                            text = "Welcome, ask a question!",
                             font_size = 25,
                             color ="white"
                              )
         self.window.add_widget(self.greeting)
 
 
-        self.question = Label(
-                            text = "You: This is where the User will have their response",
-                            font_size = 25,
-                            color ="white"
-                             )
+        #self.question = Label(
+                            #text = "You: This is where the User will have their response",
+                           # font_size = 25,
+                           # color ="white"
+                          #   )
         
-        self.window.add_widget(self.question)
+        #self.window.add_widget(self.question)
  
         #User input widget
         #self.user = TextInput(
@@ -79,17 +79,17 @@ class Alfred(App):
 
         return self.window
 
-    #def callback(self, event):
-       # self.greeting.text = "Loading ..."
-       # threading.Thread(target=self.long).start()
+    def callback(self, event):
+        self.greeting.text = "Loading ..."
+        threading.Thread(target=self.long).start()
 
-    #def long(self):
-       # time.sleep(.5)  #only simulating a task, replace with function later
+    def long(self):
+        time.sleep(.5)  #only simulating a task, replace with function later
 
-       # Clock.schedule_once(self.update_greeting)
+        Clock.schedule_once(self.update_greeting)
 
-   # def update_greeting(self, event):
-       # self.greeting.text = "Hello " + self.user.text
+    def update_greeting(self, event):
+        self.greeting.text = "Hello "
 
 
    
