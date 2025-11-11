@@ -19,7 +19,28 @@ DURATION = 10
 engine = pyttsx3.init()
 
 #instantiate speech-to-text model
-model = whisper.load_model("tiny")
+stt_model = whisper.load_model("tiny")
+
+#load the csv for the agent
+loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
+data = loader.load()
+
+#define the tool to the agent
+@tool
+def query_course_data(query: str) -> str:
+    """Iterates through data object and returns docs that match the query parameter"""
+    results = []
+    for doc in data:
+        if query.lower() in doc.page_content.lower():
+            results.append(doc.page_content)
+    return "\n".join(results)
+tools = [query_course_data]
+
+#instantiate the agent and bind the tool
+alfred = ChatOllama(
+    model="llama3.2:1b",
+    temperature=0,
+).bind_tools(tools)
 
 # Wake word detection which starts recording audio
 def listen_for_wake_word():
@@ -87,23 +108,68 @@ def speech_to_text(audio_file):
     audio = whisper.pad_or_trim(audio)
 
     # make log-Mel spectrogram and move to the same device as the model
-    mel = whisper.log_mel_spectrogram(audio, n_mels=model.dims.n_mels).to(model.device)
+    mel = whisper.log_mel_spectrogram(audio, n_mels=stt_model.dims.n_mels).to(stt_model.device)
 
     # detect the spoken language
-    _, probs = model.detect_language(mel)
+    _, probs = stt_model.detect_language(mel)
     #print(f"Detected language: {max(probs, key=probs.get)}")
 
     # decode the audio
     options = whisper.DecodingOptions()
-    result = whisper.decode(model, mel, options)
+    result = whisper.decode(stt_model, mel, options)
 
     # return the recognized text
     return result.text
 
 # Agent logic
+def agent(user_input, agent):
+    ALFRED = agent
+    #instantiate messages with instructions for the agent and the user input
+    messages = [
+        SystemMessage(
+            content="You are a helpful assistant whose name is Alfred. You help students at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
+            "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
+            "ALWAYS use the data returned from the tool to form your response."
+            "If the tool does not return anything, always answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
+            "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
+            "UNDER NO CIRCUMSTANCES should you ever use profanity." 
+            "When you give an answer, respond in clear sentences, not in raw CSV text."
+        ),
+        HumanMessage(content="{user_input}"),
+    ]
+    #generate inital response
+    response = ALFRED.invoke(messages)
+    #if statement to make sure the agent uses the tool to access the data
+    if response.tool_calls:
+        # Loop through each tool call
+        for tool_call in response.tool_calls:
+            tool_name = tool_call["name"]
+            tool_args = tool_call["args"]
+            tool_id = tool_call["id"]
 
+            # Find the matching tool
+            for tool in tools:
+                if tool.name == tool_name:
+                    # Execute the tool with the arguments
+                    tool_result = tool.invoke(tool_args)
 
-# Text-to-speech || NEEDS WORK
+                    # Add the tool result to the messages
+                    messages.append(
+                        ToolMessage(
+                            content=str(tool_result),
+                            tool_call_id=tool_call["id"],
+                            name=tool_name,
+                        )
+                    )
+
+                    # Get final response after tool execution
+                    final_response = ALFRED.invoke(messages)
+                    final_response_content = final_response.content
+                    tools = response.tool_calls[0]["name"]
+                    #return the final content
+                    return final_response_content
+
+# Text-to-speech
 def text_to_speech(text):
     engine.say("{text}")
     engine.runAndWait()
@@ -114,12 +180,8 @@ def main():
         listen_for_wake_word()                        # 1. Listen for wake word
         speech_input = record_audio()                 # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
         text_input = speech_to_text(speech_input)     # 3. Convert 'speech_input' to a text and save it as 'text_input'
-
-        #quick test mid-loop
-        #print(text_input)
-
-        #agent call goes here                         # 4. agent call
-        #text_to_speech(agent_response)               # 5. Speak Alfred's text response back to the user
+        agent_response = agent(text_input, alfred)    # 4. Feed the text_input into the Aflred and return Alfred's response saved as 'agent_response'
+        text_to_speech(agent_response)                # 5. Speak Alfred's response back to the user
 
 
 

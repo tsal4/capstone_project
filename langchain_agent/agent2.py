@@ -32,7 +32,6 @@ messages = [
         "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
         "UNDER NO CIRCUMSTANCES should you ever use profanity." 
         "When you give an answer, respond in clear sentences, not in raw CSV text."
-
     ),
     HumanMessage(content="what is the course number for big data analytics"),
 ]
