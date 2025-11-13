@@ -4,8 +4,6 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_community.document_loaders.csv_loader import CSVLoader
 import pyttsx3
 
-#THIS FILE GIVES AN ERROR I NEED TO WORK ON IT MORE
-
 loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
 data = loader.load()
 
@@ -44,10 +42,13 @@ print(f"Initial response: {response}")
 
 # Check for tool calls
 if response.tool_calls:
-    tool_call = response.tool_calls
+    tool_call = response.tool_calls[0]
     tool_name = tool_call["name"]
     tool_args = tool_call["args"]
+    print("*************************************")
+    print(tool_args)
 
+    tool = tools[0]
     if tool.name == tool_name:
         # Execute the tool with the arguments
         tool_result = tool.invoke(tool_args)
