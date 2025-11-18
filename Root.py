@@ -181,7 +181,7 @@ def agent(user_input, agent, tools):
 
 # Text-to-speech
 def text_to_speech(text):
-    engine.say("{text}")
+    engine.say(text)
     engine.runAndWait()
 
 # Main function that connects all our components together
@@ -205,3 +205,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#Gives the Gui all functions needed to run the program 
+def guibackend():
+        listen_for_wake_word()  # 1. Listen for wake word
+        speech_input = record_audio()  # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
+        text_input = speech_to_text(speech_input)  # 3. Convert 'speech_input' to a text and save it as 'text_input'
+        agent_response = agent(text_input, alfred, tools)  # 4. Feed the text_input into the Aflred and return Alfred's response saved as 'agent_response'
+        text_to_speech(agent_response)  # 5. Speak Alfred's response back to the user
+        return text_input, agent_response
