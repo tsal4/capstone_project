@@ -10,6 +10,8 @@ from langchain_core.tools import tool  #Allows agent to use tools
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage  #Defines instructions and input for the agent
 from langchain_community.document_loaders.csv_loader import CSVLoader  #Loads in the CSV
 
+#FIRST ROOT WITH API THAT NEEDS INTERNET
+
 #initialize variables for wake word detection and audio recording
 WAKE_WORD = "alfred"
 FREQ = 44100
@@ -156,8 +158,6 @@ def agent(user_input, agent, tools):
         tool_call = response.tool_calls[0]
         tool_name = tool_call["name"]
         tool_args = tool_call["args"]
-        print(tool_args)
-        print(type(tool_args))
 
         tool = tools[0]
         if tool.name == tool_name:

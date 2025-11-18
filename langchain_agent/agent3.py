@@ -4,6 +4,8 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_community.document_loaders.csv_loader import CSVLoader
 import pyttsx3
 
+#THIRD AGENT THAT DOES NOT USE FOR LOOPS BUT STILL CHECKS FOR TOOLS. ALSO PRINTS OUT THE TOOL ARGs
+
 loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
 data = loader.load()
 

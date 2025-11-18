@@ -2,6 +2,8 @@ from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.tools import tool
 
+#FIRST AGENT (NOT USED)
+
 '''
 #example tool
 @tool
