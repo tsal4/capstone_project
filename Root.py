@@ -18,7 +18,7 @@ FREQ = 44100
 DURATION = 10
 
 #initialize engine for text-to-speech
-engine = pyttsx3.init()
+wake_word_engine = pyttsx3.init()
 
 #instantiate speech-to-text model
 stt_model = whisper.load_model("tiny")
@@ -66,7 +66,7 @@ def listen_for_wake_word():
        #-------------------------------------------------------
         try:
             # Convert spoken audio to text using Google Speech Recognition
-            text = recognizer.recognize_google(audio).lower()    #this is onnline speech to text
+            text = recognizer.recognize_google(audio).lower()    #this is online speech to text
 
             #Use whisper model to 
            # audio_file = "wake.wav"
@@ -87,8 +87,9 @@ def listen_for_wake_word():
 
                 # NEW FEATURE: Randomized Voice Greeting
                 greeting = random.choice(greetings)
-                engine.say(greeting)
-                engine.runAndWait()
+                wake_word_engine.say(greeting)
+                wake_word_engine.runAndWait()
+                wake_word_engine.stop()
 
 
                 # Optional short pause before recording starts
@@ -143,7 +144,7 @@ def agent(user_input, agent, tools):
             content="You are a helpful assistant whose name is Alfred. You help students and faculty at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
             "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
             "ALWAYS use the data returned from the tool to form your response."
-            "If the tool does not return anything, always answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
+            "If the tool does not return anything, always answer with 'I do not understand the question, please ask again.' and NEVER PROVIDE ANY OTHER INFORMATION." \
             "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
             "UNDER NO CIRCUMSTANCES should you ever use profanity." 
             "When you give an answer, respond in clear sentences, not in raw CSV text."
@@ -176,16 +177,17 @@ def agent(user_input, agent, tools):
             # Get final response after tool execution
             final_response = ALFRED.invoke(messages)
             final_response_content = final_response.content
-            tools = response.tool_calls[0]["name"]
-            print(type(final_response_content))
-            engine.say(final_response_content)
-            engine.runAndWait()
+            tools_called = response.tool_calls[0]["name"]
             return final_response_content
+    else:
+        return "I do not understand the question, please ask again."
 
 # Text-to-speech
-def text_to_speech(text):
-    engine.say(text)
-    engine.runAndWait()
+def text_to_speech(input):
+    tts_engine = pyttsx3.init()
+    tts_engine.say(input)
+    tts_engine.runAndWait()
+    tts_engine.stop()
 
 # Main function that connects all our components together
 def main():
@@ -204,6 +206,7 @@ def main():
         print(type(agent_response))
 
         text_to_speech(agent_response)  # 5. Speak Alfred's response back to the user
+
 
 
 
