@@ -177,6 +177,8 @@ def agent(user_input, agent, tools):
             final_response = ALFRED.invoke(messages)
             final_response_content = final_response.content
             tools = response.tool_calls[0]["name"]
+            engine.say(final_response_content)
+            engine.runAndWait()
             return final_response_content
 
 # Text-to-speech
