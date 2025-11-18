@@ -92,7 +92,7 @@ def listen_for_wake_word():
 
 
                 # Optional short pause before recording starts
-                time.sleep(1)
+                time.sleep(.5)
                 return
 
 
@@ -140,7 +140,7 @@ def agent(user_input, agent, tools):
     #instantiate messages with instructions for the agent and the user input
     messages = [
         SystemMessage(
-            content="You are a helpful assistant whose name is Alfred. You help students at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
+            content="You are a helpful assistant whose name is Alfred. You help students and faculty at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
             "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
             "ALWAYS use the data returned from the tool to form your response."
             "If the tool does not return anything, always answer with 'I do not understand the question, please ask again' and NEVER PROVIDE ANY OTHER INFORMATION." \
@@ -177,6 +177,7 @@ def agent(user_input, agent, tools):
             final_response = ALFRED.invoke(messages)
             final_response_content = final_response.content
             tools = response.tool_calls[0]["name"]
+            print(type(final_response_content))
             engine.say(final_response_content)
             engine.runAndWait()
             return final_response_content
@@ -200,6 +201,7 @@ def main():
 
         #quick print to test
         print(agent_response)
+        print(type(agent_response))
 
         text_to_speech(agent_response)  # 5. Speak Alfred's response back to the user
 
