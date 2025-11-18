@@ -135,7 +135,7 @@ def agent(user_input, agent, tools):
             "UNDER NO CIRCUMSTANCES should you ever use profanity." 
             "When you give an answer, respond in clear sentences, not in raw CSV text."
         ),
-        HumanMessage(content="{user_input}"),
+        HumanMessage(content=user_input),
     ]
     #generate inital response
     response = ALFRED.invoke(messages)
