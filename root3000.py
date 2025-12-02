@@ -1,0 +1,223 @@
+import speech_recognition as sr  #Handles speech input
+import sounddevice as sd  #Records audio from the microphone
+from scipy.io.wavfile import write  #Saves recorded audio to a .wav file
+import pyttsx3  #Text-to-speech engine for vocal responses
+import time  #Used for timing pauses between actions
+import random  #Used for selecting a random greeting
+import whisper  #Model for speech-to-text
+from langchain_ollama import ChatOllama  #Framework that is compatible with Ollama
+from langchain_core.tools import tool  #Allows agent to use tools
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage  #Defines instructions and input for the agent
+
+#from langchain_community.document_loaders.csv_loader import CSVLoader  #Loads in the CSV
+
+#------------------------------------------------------------------------------
+#New Code FOr Pandas Langchain
+import pandas as pd
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+
+from wake_word.wake_word import get_response
+#----------------------------------------------------
+
+#FIRST ROOT WITH API THAT NEEDS INTERNET
+
+#initialize variables for wake word detection and audio recording
+WAKE_WORD = "alfred"
+FREQ = 44100
+DURATION = 10
+
+#initialize engine for text-to-speech
+wake_word_engine = pyttsx3.init()
+
+#instantiate speech-to-text model
+stt_model = whisper.load_model("tiny")
+
+#load the csv for the agent
+#loader = CSVLoader(file_path="courses-report.2025-10-16.csv")
+#data = loader.load()
+
+
+#-----------------------------------
+
+df = pd.read_csv("courses-report.2025-10-16.csv")
+agent = create_pandas_dataframe_agent(
+    ChatOllama(temperature=0, model="llama3.2:1b"),
+    df,
+    verbose=False,
+)
+
+
+
+
+
+
+#define the tool to the agent
+
+
+#instantiate the agent and bind the tool
+
+# Wake word detection which starts recording audio
+def listen_for_wake_word():
+    """Continuously listens through the microphone until the wake word is detected."""
+    recognizer = sr.Recognizer()
+    mic = sr.Microphone() 
+    print("Listening for wake word... say 'Alfred' to start recording.")
+   
+    greetings = [
+        "Hello, I'm Alfred. How can I help you?",
+        "Hi there, Alfred here. What can I do for you today?",
+        "Greetings! This is Alfred. How may I assist you?",
+        "Hey! I'm Alfred. How can I help you today?"
+    ]
+   
+    while True:
+        # Capture audio from microphone
+        with mic as source:
+            recognizer.adjust_for_ambient_noise(source)       # Reduce background noise
+            audio = recognizer.listen(source, phrase_time_limit=3)  # Listen for up to 3 seconds
+       #-------------------------------------------------------
+        try:
+            # Convert spoken audio to text using Google Speech Recognition
+            text = recognizer.recognize_google(audio).lower()    #this is online speech to text
+
+            #Use whisper model to 
+           # audio_file = "wake.wav"
+
+           # recording = sd.rec(int(DURATION * FREQ), samplerate=FREQ, channels=2)
+            #sd.wait()
+           # write("wake.wav", FREQ, recording)
+
+           # text = speech_to_text("wake.wav").lower()
+
+
+            print(f"Heard: {text}")
+           
+            # Check if the wake word was said
+            if WAKE_WORD in text:
+                print("Wake word detected!")
+
+
+                # NEW FEATURE: Randomized Voice Greeting
+                greeting = random.choice(greetings)
+                wake_word_engine.say(greeting)
+                wake_word_engine.runAndWait()
+                wake_word_engine.stop()
+
+
+                # Optional short pause before recording starts
+                time.sleep(.5)
+                return
+
+
+        except sr.UnknownValueError:
+            # Speech was unclear or not recognized
+            pass
+        except sr.RequestError:
+            # API request failed
+            print("Speech recognition service error")
+
+# Record user input
+def record_audio():
+    """Records 10 seconds of audio and saves it to 'recording.wav'."""
+    print("Recording for 10 seconds...")
+    recording = sd.rec(int(DURATION * FREQ), samplerate=FREQ, channels=2)
+    sd.wait()  # Wait until recording is complete
+    write("recording.wav", FREQ, recording)
+    #print("Saved as recording.wav")
+    audio_file = "recording.wav"
+    return audio_file
+
+# Speech-to-text
+def speech_to_text(audio_file):
+    # load audio and pad/trim it to fit 30 seconds
+    audio = whisper.load_audio(audio_file)
+    audio = whisper.pad_or_trim(audio)
+
+    # make log-Mel spectrogram and move to the same device as the model
+    mel = whisper.log_mel_spectrogram(audio, n_mels=stt_model.dims.n_mels).to(stt_model.device)
+
+    # detect the spoken language
+    _, probs = stt_model.detect_language(mel)
+    #print(f"Detected language: {max(probs, key=probs.get)}")
+
+    # decode the audio
+    options = whisper.DecodingOptions()
+    result = whisper.decode(stt_model, mel, options)
+
+    # return the recognized text
+    return result.text
+
+# Agent logic
+def agent(user_input):
+ 
+        prompt = (
+            "You are a helpful assistant whose name is Alfred. You help students and faculty at John Carroll University by answering questions on Math, Computer Science, and Data Science course information." \
+            "ALWAYS use the tool provided to answer the user's question. ALWAYS use the user's input as the parameter for the tool." \
+            "ALWAYS use the data returned from the tool to form your response."
+            "If the tool does not return anything, always answer with 'I do not understand the question, please ask again.' and NEVER PROVIDE ANY OTHER INFORMATION." \
+            "UNDER NO CIRCUMSTANCES should you ever answer questions that do not pertain to the course information." \
+            "UNDER NO CIRCUMSTANCES should you ever use profanity." 
+            "When you give an answer, respond in clear sentences, not in raw CSV text."
+        )
+
+        try:
+            repsonse = agent.invoke(prompt + "" + user_input)
+            return agent_response["output"]
+        except:
+            return "I don't understand, please ask again."
+     
+     #pip install langchain_experimental
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Text-to-speech
+def text_to_speech(input):
+    tts_engine = pyttsx3.init()
+    tts_engine.say(input)
+    tts_engine.runAndWait()
+    tts_engine.stop()
+
+# Main function that connects all our components together
+def main():
+    while True:
+        listen_for_wake_word()  # 1. Listen for wake word
+        speech_input = record_audio()  # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
+        text_input = speech_to_text(speech_input)  # 3. Convert 'speech_input' to a text and save it as 'text_input'
+
+        #quick print to test
+        print(text_input)
+
+        agent_response = agent(text_input)  # 4. Feed the text_input into the Aflred and return Alfred's response saved as 'agent_response'
+
+        #quick print to test
+        print(agent_response)
+        print(type(agent_response))
+
+        text_to_speech(agent_response)  # 5. Speak Alfred's response back to the user
+
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+#Gives the Gui all functions needed to run the program 
+def guibackend():
+        listen_for_wake_word()  # 1. Listen for wake word
+        speech_input = record_audio()  # 2. Record user's spoken input and return it as a .wav file called 'speech_input'
+        text_input = speech_to_text(speech_input)  # 3. Convert 'speech_input' to a text and save it as 'text_input'
+        agent_response = agent(text_input)  # 4. Feed the text_input into the Aflred and return Alfred's response saved as 'agent_response'
+        text_to_speech(agent_response)  # 5. Speak Alfred's response back to the user
+        return text_input, agent_response
