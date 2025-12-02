@@ -40,7 +40,7 @@ class Alfred(App):
 
     #When the button is pressed it will listen and print out "Listening for wake word"
     def activateAlfred(self, instance):
-        self.greeting.text = "Listening..."
+        self.greeting.text = "Listening for wake word... say 'Alfred' to start recording."
         threading.Thread(target=self.alfredThread).start()
 
     def alfredThread(self):

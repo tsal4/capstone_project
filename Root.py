@@ -93,7 +93,7 @@ def listen_for_wake_word():
 
 
                 # Optional short pause before recording starts
-                time.sleep(.5)
+                time.sleep(.1)
                 return
 
 
