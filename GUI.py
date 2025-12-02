@@ -26,10 +26,6 @@ class Alfred(App):
                              )
         self.window.add_widget(self.greeting)
 
-
-        
-
-        
         #Button Widget
         self.button = Button(text = "Press to Speak",
                              size_hint = (1,0.5), 
@@ -63,57 +59,3 @@ class Alfred(App):
    
 if __name__ == "__main__":
     Alfred().run()
-    
-
-
-
-
-
-
-
-#If needed, extra code for labels and loading screen
-
-
-#Microphone Button
-        #self.mic_button = Button(text= "Mic", size_hint = (None,None), size = (100,50), background_color = "#B700FF"
-                                #)
-        #Horizontal Layout for Buttons
-        #horizontal_layout = BoxLayout(orientation='horizontal', spacing=20, padding=20)
-
-       # horizontal_layout.add_widget(self.mic_button)
-        #horizontal_layout.add_widget(self.button)
-
-        #self.window.add_widget(horizontal_layout)
-
-
-    #def callback(self, event):
-       # self.greeting.text = "Loading ..."
-       # threading.Thread(target=self.long).start()
-
-   # def long(self):
-       # time.sleep(.5)  #only simulating a task, replace with function later
-
-       # Clock.schedule_once(self.update_greeting)
-
-   # def update_greeting(self, event):
-       # self.greeting.text = "Hello "
-
-
-
-
-       #self.question = Label(
-                            #text = "You: This is where the User will have their response",
-                           # font_size = 25,
-                           # color ="white"
-                          #   )
-        
-        #self.window.add_widget(self.question)
- 
-        #User input widget
-        #self.user = TextInput(
-
-            #            padding_y = (20,20),
-           #             size_hint = (1,0.5)
-       # )
-
-       # self.window.add_widget(self.user)
