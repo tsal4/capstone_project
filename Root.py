@@ -15,7 +15,7 @@ from langchain_community.document_loaders.csv_loader import CSVLoader  #Loads in
 #initialize variables for wake word detection and audio recording
 WAKE_WORD = "alfred"
 FREQ = 44100
-DURATION = 10
+DURATION = 7
 
 #initialize engine for text-to-speech
 wake_word_engine = pyttsx3.init()
@@ -55,7 +55,6 @@ def listen_for_wake_word():
         "Hello, I'm Alfred. How can I help you?",
         "Hi there, Alfred here. What can I do for you today?",
         "Greetings! This is Alfred. How may I assist you?",
-        "Hey! I'm Alfred. How can I help you today?"
     ]
    
     while True:
@@ -106,8 +105,8 @@ def listen_for_wake_word():
 
 # Record user input
 def record_audio():
-    """Records 10 seconds of audio and saves it to 'recording.wav'."""
-    print("Recording for 10 seconds...")
+    """Records 7 seconds of audio and saves it to 'recording.wav'."""
+    print("Recording for 7 seconds...")
     recording = sd.rec(int(DURATION * FREQ), samplerate=FREQ, channels=2)
     sd.wait()  # Wait until recording is complete
     write("recording.wav", FREQ, recording)
