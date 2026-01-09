@@ -1,10 +1,10 @@
 # Alfred: the MCDS AI Voice Assistant
 
-##### This Repository is for the Fall 2025 AI Chatbot Capstone Project.\
+#### This Repository is for the Fall 2025 AI Chatbot Capstone Project.
 
-#### By: Thaddeus Salwan, Steve Loya, Justin Lupton, Frank Freeman\
+#### By: Thaddeus Salwan, Steve Loya, Justin Lupton, Frank Freeman
 
-###### Alfred is a fully functional Retrieval-Augmented Generation system with voice capabilites\
+###### Alfred is a fully functional Retrieval-Augmented Generation system with voice capabilites
 
 Features include:
 - Wake Word Detection: Google Speech Recognition
