@@ -4,7 +4,7 @@
 
 #### By: Thaddeus Salwan, Steve Loya, Justin Lupton, Frank Freeman
 
-Alfred is a fully functional Retrieval-Augmented Generation system with voice capabilites. Alfred utilizes user input to query data in order to generate a correct answer. Alfred is designed to be ran locally on a Raspberry Pi with a speakerphone and touchscreen display.
+Alfred is a fully functional Retrieval-Augmented Generation system with voice capabilites. Alfred utilizes spoken user input to query the MCDS course information data. Alfred then uses the queried data to generate a correct answer and speaks it back to the user. Alfred is designed to be ran locally on a Raspberry Pi with a speakerphone and touchscreen display.
 
 Features include:
 - Wake Word Detection: Google Speech Recognition
